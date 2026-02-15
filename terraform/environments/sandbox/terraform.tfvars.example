@@ -1,0 +1,104 @@
+# Sandbox環境の設定
+# このファイルをコピーして terraform.tfvars を作成してください
+# cp terraform.tfvars.example terraform.tfvars
+
+# ============================================
+# GCP プロジェクト設定
+# ============================================
+project_id = "YOUR_PROJECT_ID"           # GCPプロジェクトID
+region     = "asia-northeast1"            # デプロイリージョン
+
+# ============================================
+# Cloud Run 設定
+# ============================================
+cloud_run_service_name = "timetable-internal-api"  # サービス名
+cloud_run_image        = "gcr.io/YOUR_PROJECT_ID/your-image:tag"  # コンテナイメージURL
+
+# 環境変数
+cloud_run_env_vars = {
+  "CLOUD_SQL_INSTANCE" = "YOUR_PROJECT_ID:asia-northeast1:YOUR_SQL_INSTANCE"
+  "DB_NAME"            = "your-database-name"
+  "DB_USER"            = "your-db-user"
+}
+
+# リソース設定
+cloud_run_cpu           = "1000m"         # CPUリソース (例: 1000m = 1コア)
+cloud_run_memory        = "1Gi"           # メモリ (例: 512Mi, 1Gi, 2Gi)
+cloud_run_max_instances = 3               # 最大インスタンス数
+cloud_run_min_instances = 0               # 最小インスタンス数（0でスケールダウン）
+
+# 既存のサービスアカウントを使用する場合は指定
+# 指定しない場合は新規作成されます
+cloud_run_service_account = "YOUR_SERVICE_ACCOUNT@YOUR_PROJECT_ID.iam.gserviceaccount.com"
+
+# コンテナ並行処理数
+cloud_run_container_concurrency = 30      # 1コンテナあたりの同時リクエスト数
+
+# Secret Managerからのシークレット取得
+cloud_run_secrets = [
+  {
+    name    = "DB_PASSWORD"               # 環境変数名
+    secret  = "your-secret-name"          # Secret Manager上のシークレット名
+    version = "latest"                    # バージョン（latest or 数字）
+  }
+]
+
+# ============================================
+# Cloud SQL 設定
+# ============================================
+cloud_sql_instance_name    = "your-sql-instance"  # インスタンス名
+cloud_sql_database_version = "POSTGRES_17"        # データベースバージョン
+cloud_sql_tier             = "db-f1-micro"        # マシンタイプ
+cloud_sql_disk_size        = 10                   # ディスクサイズ（GB）
+
+# 削除保護（本番環境では必ずtrueにする）
+cloud_sql_deletion_protection = true
+
+# ディスク自動拡張（falseで固定サイズ）
+cloud_sql_disk_autoresize = false
+
+# バックアップとメンテナンス
+cloud_sql_backup_start_time                = "07:00"    # バックアップ開始時刻（UTC）
+cloud_sql_backup_location                  = "asia"     # バックアップ保存場所
+cloud_sql_maintenance_window_day           = 7          # メンテナンス曜日（1=月曜、7=日曜）
+cloud_sql_maintenance_window_hour          = 0          # メンテナンス開始時刻（UTC）
+cloud_sql_maintenance_window_update_track  = "canary"   # 更新トラック（canary or stable）
+
+# パスワードポリシーの有効化
+cloud_sql_password_validation_enabled = true
+
+# 認証済みネットワーク（接続を許可するIPアドレス）
+cloud_sql_authorized_networks = [
+  {
+    name  = "オフィス"                    # 任意の名前
+    value = "xxx.xxx.xxx.xxx/32"         # IPアドレス（CIDR形式）
+  }
+  # 複数指定可能
+  # {
+  #   name  = "自宅"
+  #   value = "yyy.yyy.yyy.yyy/32"
+  # }
+]
+
+# データベース定義
+cloud_sql_databases = [
+  {
+    name      = "your-database-name"     # データベース名
+    charset   = "UTF8"                   # 文字セット
+    collation = "en_US.UTF8"             # 照合順序
+  }
+]
+
+# ユーザー管理
+# セキュリティ上、パスワードは平文管理しないため空配列を推奨
+# ユーザーは手動またはSecret Managerで管理してください
+cloud_sql_users = []
+
+# ============================================
+# ラベル設定
+# ============================================
+labels = {
+  environment = "sandbox"                # 環境名
+  managed_by  = "terraform"              # 管理ツール
+  project     = "timetable"              # プロジェクト名
+}
