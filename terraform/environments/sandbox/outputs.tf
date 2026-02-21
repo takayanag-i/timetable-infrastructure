@@ -32,3 +32,19 @@ output "cloud_sql_databases" {
   description = "List of database names"
   value       = module.cloud_sql.database_names
 }
+
+# Identity Platform outputs
+output "identity_platform_issuer_uri" {
+  description = "Identity Platform JWT Issuer URI (Spring Bootで使用)"
+  value       = module.identity_platform.issuer_uri
+}
+
+output "identity_platform_jwks_uri" {
+  description = "Identity Platform JWKS URI (Spring Bootで使用)"
+  value       = module.identity_platform.jwks_uri
+}
+
+output "identity_platform_auth_domain" {
+  description = "Identity Platform認証ドメイン (フロントエンドで使用)"
+  value       = module.identity_platform.auth_domain
+}

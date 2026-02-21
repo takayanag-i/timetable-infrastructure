@@ -72,3 +72,11 @@ module "cloud_sql" {
 
   labels = var.labels
 }
+
+# Identity Platform
+module "identity_platform" {
+  source = "../../modules/identity_platform"
+
+  project_id         = var.project_id
+  authorized_domains = var.identity_platform_authorized_domains
+}

@@ -102,3 +102,13 @@ labels = {
   managed_by  = "terraform"              # 管理ツール
   project     = "timetable"              # プロジェクト名
 }
+
+# ============================================
+# Identity Platform 設定
+# ============================================
+# 認証済みドメイン（フロントエンドのオリジン）
+identity_platform_authorized_domains = [
+  "your-app.vercel.app",                 # Vercel本番ドメイン
+  "your-app-git-main-yourteam.vercel.app" # Vercelプレビュードメイン
+]
+

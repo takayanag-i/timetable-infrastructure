@@ -181,3 +181,10 @@ variable "labels" {
     managed_by  = "terraform"
   }
 }
+
+# Identity Platform variables
+variable "identity_platform_authorized_domains" {
+  description = "認証済みドメインのリスト（フロントエンドのオリジン）"
+  type        = list(string)
+  default     = []
+}
