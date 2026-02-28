@@ -188,3 +188,17 @@ variable "identity_platform_authorized_domains" {
   type        = list(string)
   default     = []
 }
+
+# Firebase Admin Service Account variables
+variable "firebase_admin_sa_account_id" {
+  description = "Firebase Admin サービスアカウントID"
+  type        = string
+  default     = "firebase-admin-sa"
+}
+
+variable "firebase_admin_sa_display_name" {
+  description = "Firebase Admin サービスアカウントの表示名"
+  type        = string
+  default     = "Firebase Admin Service Account"
+}
+

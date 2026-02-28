@@ -6,6 +6,7 @@
 
 - **Cloud Run**: アプリケーションのコンテナ実行環境
 - **Cloud SQL**: PostgreSQLデータベース
+- **Identity Platform**: Firebase Authentication（IdP）
 - **IAM**: サービスアカウントと権限管理
 
 ### 環境
@@ -20,24 +21,54 @@
 infra/
 ├── .gitignore
 ├── README.md
+├── scripts/                   # 運用スクリプト
+│   └── firebase-admin/       # Firebase Admin SDK スクリプト
+│       ├── README.md
+│       ├── package.json
+│       ├── setup-user.js     # テストユーザー作成
+│       ├── set-custom-claims.js  # カスタムクレーム設定
+│       └── list-users.js     # ユーザー一覧表示
 └── terraform/
-    ├── environments/           # 環境別の設定
-    │   └── sandbox/           # Sandbox環境
-    │       ├── main.tf        # メイン設定
-    │       ├── variables.tf   # 変数定義
-    │       ├── outputs.tf     # 出力定義
-    │       ├── backend.tf     # State管理設定
+    ├── environments/          # 環境別の設定
+    │   └── sandbox/          # Sandbox環境
+    │       ├── main.tf       # メイン設定
+    │       ├── variables.tf  # 変数定義
+    │       ├── outputs.tf    # 出力定義
+    │       ├── backend.tf    # State管理設定
     │       └── terraform.tfvars.example  # 設定例
-    └── modules/               # 再利用可能なモジュール
-        ├── cloud_run/         # Cloud Runモジュール
-        ├── cloud_sql/         # Cloud SQLモジュール
-        ├── vpc/               # VPCモジュール
-        └── iam/               # IAMモジュール
+    └── modules/              # 再利用可能なモジュール
+        ├── cloud_run/        # Cloud Runモジュール
+        ├── cloud_sql/        # Cloud SQLモジュール
+        ├── identity_platform/  # Identity Platformモジュール
+        ├── vpc/              # VPCモジュール
+        └── iam/              # IAMモジュール
 ```
 
 ## 日常的な運用
 
-### 設定変更の流れ
+### Identity Platform ユーザー管理
+
+テストユーザーの作成とカスタムクレーム設定:
+
+```bash
+cd scripts/firebase-admin
+
+# 初回のみ: 依存関係をインストール
+npm install
+
+# テストユーザー作成
+npm run setup-user
+
+# 既存ユーザーにカスタムクレーム設定
+node set-custom-claims.js <USER_UID>
+
+# ユーザー一覧表示
+npm run list-users
+```
+
+詳細は [`scripts/firebase-admin/README.md`](./scripts/firebase-admin/README.md) を参照してください。
+
+### Terraform による設定変更
 
 1. **変更前の確認**
    ```bash

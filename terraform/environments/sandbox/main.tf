@@ -80,3 +80,12 @@ module "identity_platform" {
   project_id         = var.project_id
   authorized_domains = var.identity_platform_authorized_domains
 }
+
+# Firebase Admin Service Account
+module "firebase_admin_sa" {
+  source = "../../modules/firebase_admin_sa"
+
+  project_id   = var.project_id
+  account_id   = var.firebase_admin_sa_account_id
+  display_name = var.firebase_admin_sa_display_name
+}

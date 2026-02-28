@@ -112,3 +112,10 @@ identity_platform_authorized_domains = [
   "your-app-git-main-yourteam.vercel.app" # Vercelプレビュードメイン
 ]
 
+# ============================================
+# Firebase Admin Service Account 設定
+# ============================================
+firebase_admin_sa_account_id   = "firebase-admin-sa"           # サービスアカウントID
+firebase_admin_sa_display_name = "Firebase Admin Service Account" # 表示名
+# キー発行はCloud ConsoleのIAM > サービスアカウントから行ってください
+

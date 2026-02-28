@@ -48,3 +48,10 @@ output "identity_platform_auth_domain" {
   description = "Identity Platform認証ドメイン (フロントエンドで使用)"
   value       = module.identity_platform.auth_domain
 }
+
+# Firebase Admin Service Account outputs
+output "firebase_admin_sa_email" {
+  description = "Firebase Admin サービスアカウントのメールアドレス"
+  value       = module.firebase_admin_sa.service_account_email
+}
+
