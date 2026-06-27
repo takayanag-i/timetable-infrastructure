@@ -1,15 +1,15 @@
 output "service_account_email" {
-  description = "Firebase Admin サービスアカウントのメールアドレス"
+  description = "メールアドレス"
   value       = google_service_account.firebase_admin.email
 }
 
 output "service_account_id" {
-  description = "Firebase Admin サービスアカウントのID"
+  description = "サービスアカウントID"
   value       = google_service_account.firebase_admin.unique_id
 }
 
 output "service_account_name" {
-  description = "Firebase Admin サービスアカウントのリソース名"
+  description = "リソース名"
   value       = google_service_account.firebase_admin.name
 }
 

@@ -55,3 +55,9 @@ output "firebase_admin_sa_email" {
   value       = module.firebase_admin_sa.service_account_email
 }
 
+# Cloud Tasks outputs
+output "cloud_tasks_queue_path" {
+  description = "Cloud Tasks queue full resource path"
+  value       = module.cloud_tasks.queue_path
+}
+

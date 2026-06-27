@@ -4,20 +4,20 @@ variable "project_id" {
 }
 
 variable "account_id" {
-  description = "サービスアカウントID (例: firebase-admin-sa)"
+  description = "サービスアカウントID"
   type        = string
   default     = "firebase-admin-sa"
 }
 
 variable "display_name" {
-  description = "サービスアカウントの表示名"
+  description = "表示名"
   type        = string
   default     = "Firebase Admin Service Account"
 }
 
 variable "description" {
-  description = "サービスアカウントの説明"
+  description = "説明"
   type        = string
-  default     = "Firebase Admin SDKを使用するためのサービスアカウント（テストユーザー作成・カスタムクレーム設定用）"
+  default     = "Firebase Admin SDK用のサービスアカウント"
 }
 

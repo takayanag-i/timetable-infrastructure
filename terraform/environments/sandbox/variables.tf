@@ -202,3 +202,22 @@ variable "firebase_admin_sa_display_name" {
   default     = "Firebase Admin Service Account"
 }
 
+# Cloud Tasks variables
+variable "cloud_tasks_queue_name" {
+  description = "Cloud Tasks queue name for optimization jobs"
+  type        = string
+  default     = "optimization-queue"
+}
+
+variable "cloud_tasks_max_concurrent_dispatches" {
+  description = "Maximum concurrent task dispatches"
+  type        = number
+  default     = 1
+}
+
+variable "cloud_tasks_max_dispatches_per_second" {
+  description = "Maximum dispatches per second"
+  type        = number
+  default     = 1
+}
+

@@ -89,3 +89,16 @@ module "firebase_admin_sa" {
   account_id   = var.firebase_admin_sa_account_id
   display_name = var.firebase_admin_sa_display_name
 }
+
+# Cloud Tasks Queue (Optimization)
+module "cloud_tasks" {
+  source = "../../modules/cloud_tasks"
+
+  project_id                     = var.project_id
+  region                         = var.region
+  queue_name                     = var.cloud_tasks_queue_name
+  max_concurrent_dispatches      = var.cloud_tasks_max_concurrent_dispatches
+  max_dispatches_per_second      = var.cloud_tasks_max_dispatches_per_second
+  max_attempts                   = 1
+  enqueuer_service_account_email = var.cloud_run_service_account
+}
