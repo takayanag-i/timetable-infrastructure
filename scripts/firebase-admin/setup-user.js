@@ -1,13 +1,13 @@
 /**
  * Firebase Admin SDK - テストユーザー作成スクリプト
  *
- * 新規ユーザーを作成し、カスタムクレーム（roles: ["USER"]）を自動設定します。
+ * 新規ユーザーを作成し、カスタムクレーム（roles: ["USER"], schId）を自動設定します。
  *
  * 使用方法:
- *   node setup-user.js <email> <password> [displayName]
+ *   node setup-user.js <email> <password> [displayName] [schId]
  *
  * 例:
- *   node setup-user.js test@example.com Password123 "Test User"
+ *   node setup-user.js test@example.com Password123 "Test User" school-0001
  */
 
 const admin = require('firebase-admin');
@@ -27,11 +27,11 @@ admin.initializeApp({
  * ユーザー作成とカスタムクレーム設定
  */
 async function setupUser() {
-  const [,, email, password, displayName = 'Test User'] = process.argv;
+  const [,, email, password, displayName = 'Test User', schId = 'school-0001'] = process.argv;
 
   if (!email || !password) {
-    console.error('使用方法: node setup-user.js <email> <password> [displayName]');
-    console.error('例:       node setup-user.js test@example.com Password123 "Test User"');
+    console.error('使用方法: node setup-user.js <email> <password> [displayName] [schId]');
+    console.error('例:       node setup-user.js test@example.com Password123 "Test User" school-0001');
     process.exit(1);
   }
 
@@ -56,11 +56,13 @@ async function setupUser() {
     // カスタムクレーム設定
     console.log('🔐 Setting custom claims...');
     await admin.auth().setCustomUserClaims(userRecord.uid, {
-      roles: ['USER']
+      roles: ['USER'],
+      schId: schId
     });
 
     console.log('✅ Custom claims set successfully!');
     console.log('   roles: ["USER"]');
+    console.log(`   schId: "${schId}"`);
     console.log('');
 
     // 結果表示
