@@ -17,6 +17,9 @@ resource "google_cloud_run_service" "main" {
         } : {},
         length(var.cloudsql_instances) > 0 ? {
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_instances)
+        } : {},
+        var.startup_cpu_boost ? {
+          "run.googleapis.com/startup-cpu-boost" = "true"
         } : {}
       )
     }
@@ -83,6 +86,16 @@ resource "google_service_account" "cloud_run" {
   project      = var.project_id
   account_id   = "${var.service_name}-sa"
   display_name = "Service Account for ${var.service_name}"
+}
+
+# IAM binding to allow specific members to invoke (for non-public services)
+resource "google_cloud_run_service_iam_member" "invokers" {
+  for_each = toset(var.invoker_members)
+  project  = var.project_id
+  service  = google_cloud_run_service.main.name
+  location = google_cloud_run_service.main.location
+  role     = "roles/run.invoker"
+  member   = each.value
 }
 
 # IAM binding to allow public access (if enabled)

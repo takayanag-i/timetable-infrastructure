@@ -112,3 +112,15 @@ variable "container_concurrency" {
   type        = number
   default     = 80
 }
+
+variable "invoker_members" {
+  description = "Members granted roles/run.invoker (e.g. \"serviceAccount:xxx@project.iam.gserviceaccount.com\"). Use with allow_unauthenticated = false"
+  type        = list(string)
+  default     = []
+}
+
+variable "startup_cpu_boost" {
+  description = "Enable startup CPU boost"
+  type        = bool
+  default     = false
+}

@@ -13,6 +13,21 @@ output "cloud_run_service_account" {
   value       = module.cloud_run.service_account_email
 }
 
+output "fastapi_service_url" {
+  description = "FastAPI最適化ワーカーのURL（SpringのCLOUD_TASKS_WORKER_URLに設定する）"
+  value       = module.cloud_run_fastapi.service_url
+}
+
+output "fastapi_service_name" {
+  description = "FastAPI最適化ワーカーのサービス名"
+  value       = module.cloud_run_fastapi.service_name
+}
+
+output "fastapi_service_account" {
+  description = "FastAPI最適化ワーカーの実行SA（SpringのSERVICE_AUTH_SAに設定する）"
+  value       = module.cloud_run_fastapi.service_account_email
+}
+
 output "cloud_sql_instance_name" {
   description = "Cloud SQL instance name"
   value       = module.cloud_sql.instance_name

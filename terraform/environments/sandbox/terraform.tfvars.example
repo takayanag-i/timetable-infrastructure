@@ -44,6 +44,38 @@ cloud_run_secrets = [
 ]
 
 # ============================================
+# Cloud Run 設定（FastAPI最適化ワーカー）
+# ============================================
+fastapi_service_name = "timetable-optimisation-api"  # サービス名
+fastapi_image        = "asia-northeast1-docker.pkg.dev/YOUR_PROJECT_ID/cloud-run-source-deploy/timetable-optimisation-api:tag"
+
+# 環境変数（GurobiのWLSライセンス等。INT_API_URL / INT_API_AUDIENCE は自動設定されるため不要）
+fastapi_env_vars = {
+  "WLSACCESSID" = "your-wls-access-id"   # Gurobi WLSアクセスID
+  "LICENSEID"   = "your-license-id"      # GurobiライセンスID
+}
+
+# シークレット（Secret Manager）
+fastapi_secrets = [
+  {
+    name    = "WLSSECRET"                # Gurobi WLSシークレット
+    secret  = "wlssecret"
+    version = "latest"
+  }
+]
+
+# リソース設定
+fastapi_cpu                   = "1000m"
+fastapi_memory                = "512Mi"
+fastapi_max_instances         = 3
+fastapi_min_instances         = 0
+fastapi_container_concurrency = 30
+fastapi_timeout_seconds       = 300     # 最適化ジョブの実行時間に応じて延長（最大3600）
+
+# 実行SA（未指定時はcloud_run_service_accountと同じSAを使用）
+# fastapi_service_account = "fastapi-worker-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com"
+
+# ============================================
 # Cloud SQL 設定
 # ============================================
 cloud_sql_instance_name    = "your-sql-instance"  # インスタンス名

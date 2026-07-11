@@ -31,6 +31,42 @@ module "cloud_run" {
   labels = var.labels
 }
 
+# Cloud Run Service (FastAPI Optimization Worker)
+module "cloud_run_fastapi" {
+  source = "../../modules/cloud_run"
+
+  project_id   = var.project_id
+  region       = var.region
+  service_name = var.fastapi_service_name
+  image        = var.fastapi_image
+
+  # INT_API_URL はSpring（内部API）のURLに自動追従。
+  # INT_API_AUDIENCE はSpring側の SERVICE_AUTH_AUDIENCE と完全一致が必要なため同じ値を参照する
+  environment_variables = merge(var.fastapi_env_vars, {
+    INT_API_URL      = module.cloud_run.service_url
+    INT_API_AUDIENCE = lookup(var.cloud_run_env_vars, "SERVICE_AUTH_AUDIENCE", module.cloud_run.service_url)
+  })
+  secrets = var.fastapi_secrets
+
+  cpu                   = var.fastapi_cpu
+  memory                = var.fastapi_memory
+  max_instances         = var.fastapi_max_instances
+  min_instances         = var.fastapi_min_instances
+  container_concurrency = var.fastapi_container_concurrency
+  timeout_seconds       = var.fastapi_timeout_seconds
+  startup_cpu_boost     = true
+
+  # 公開しない。Cloud TasksのOIDCトークン（CLOUD_TASKS_SA = cloud_run_service_account）
+  # による呼び出しのみ許可
+  allow_unauthenticated = false
+  invoker_members       = ["serviceAccount:${var.cloud_run_service_account}"]
+
+  service_account_email  = coalesce(var.fastapi_service_account, var.cloud_run_service_account)
+  create_service_account = false
+
+  labels = var.labels
+}
+
 # Cloud SQL Instance
 module "cloud_sql" {
   source = "../../modules/cloud_sql"

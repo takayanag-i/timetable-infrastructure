@@ -202,6 +202,76 @@ variable "firebase_admin_sa_display_name" {
   default     = "Firebase Admin Service Account"
 }
 
+# FastAPI (Optimization Worker) Cloud Run variables
+variable "fastapi_service_name" {
+  description = "FastAPI最適化ワーカーのCloud Runサービス名"
+  type        = string
+  default     = "timetable-optimisation-api"
+}
+
+variable "fastapi_image" {
+  description = "FastAPI最適化ワーカーのコンテナイメージURL"
+  type        = string
+}
+
+variable "fastapi_env_vars" {
+  description = "FastAPI最適化ワーカーの環境変数（INT_API_URL / INT_API_AUDIENCE はSpringのURLから自動設定されるため不要）"
+  type        = map(string)
+  default     = {}
+}
+
+variable "fastapi_secrets" {
+  description = "FastAPI最適化ワーカーのシークレット環境変数（Secret Manager）"
+  type = list(object({
+    name    = string
+    secret  = string
+    version = string
+  }))
+  default = []
+}
+
+variable "fastapi_cpu" {
+  description = "FastAPIのCPUリソース"
+  type        = string
+  default     = "1000m"
+}
+
+variable "fastapi_memory" {
+  description = "FastAPIのメモリ"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "fastapi_max_instances" {
+  description = "FastAPIの最大インスタンス数"
+  type        = number
+  default     = 3
+}
+
+variable "fastapi_min_instances" {
+  description = "FastAPIの最小インスタンス数"
+  type        = number
+  default     = 0
+}
+
+variable "fastapi_container_concurrency" {
+  description = "FastAPIの1コンテナあたりの同時リクエスト数"
+  type        = number
+  default     = 30
+}
+
+variable "fastapi_timeout_seconds" {
+  description = "FastAPIのリクエストタイムアウト（秒）。最適化ジョブの実行時間を考慮して設定する"
+  type        = number
+  default     = 300
+}
+
+variable "fastapi_service_account" {
+  description = "FastAPIの実行サービスアカウント（未指定時はcloud_run_service_accountと同じ）"
+  type        = string
+  default     = null
+}
+
 # Cloud Tasks variables
 variable "cloud_tasks_queue_name" {
   description = "Cloud Tasks queue name for optimization jobs"
