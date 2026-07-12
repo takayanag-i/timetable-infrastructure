@@ -19,6 +19,12 @@ cloud_run_env_vars = {
   "CLOUD_SQL_INSTANCE" = "YOUR_PROJECT_ID:asia-northeast1:YOUR_SQL_INSTANCE"
   "DB_NAME"            = "your-database-name"
   "DB_USER"            = "your-db-user"
+  # 最適化ジョブのCloud Tasksディスパッチ（キューのパスはterraform output cloud_tasks_queue_path、
+  # WORKER_URLはterraform output fastapi_service_url を設定）
+  "USE_CLOUD_TASKS"        = "true"
+  "CLOUD_TASKS_QUEUE"      = "projects/YOUR_PROJECT_ID/locations/asia-northeast1/queues/optimization-queue"
+  "CLOUD_TASKS_WORKER_URL" = "https://YOUR_FASTAPI_SERVICE_URL"
+  "CLOUD_TASKS_SA"         = "YOUR_SERVICE_ACCOUNT@YOUR_PROJECT_ID.iam.gserviceaccount.com"
 }
 
 # リソース設定

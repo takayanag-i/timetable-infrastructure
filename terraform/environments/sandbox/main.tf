@@ -126,6 +126,14 @@ module "firebase_admin_sa" {
   display_name = var.firebase_admin_sa_display_name
 }
 
+# SpringがOIDCトークン付きタスクを作成するには、トークン対象SA（CLOUD_TASKS_SA）への
+# actAs権限が必要（対象SAが自分自身でも明示的な付与が要る）
+resource "google_service_account_iam_member" "spring_acts_as_tasks_oidc_sa" {
+  service_account_id = "projects/${var.project_id}/serviceAccounts/${var.cloud_run_service_account}"
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${var.cloud_run_service_account}"
+}
+
 # Cloud Tasks Queue (Optimization)
 module "cloud_tasks" {
   source = "../../modules/cloud_tasks"
