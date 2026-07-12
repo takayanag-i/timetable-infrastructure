@@ -12,7 +12,8 @@ region     = "asia-northeast1"            # デプロイリージョン
 # Cloud Run 設定
 # ============================================
 cloud_run_service_name = "timetable-internal-api"  # サービス名
-cloud_run_image        = "gcr.io/YOUR_PROJECT_ID/your-image:tag"  # コンテナイメージURL
+# コンテナイメージURL（初回作成時のみ使用。以後のイメージ更新はCloud Build。ignore_changes設定済み）
+cloud_run_image        = "gcr.io/YOUR_PROJECT_ID/your-image:tag"
 
 # 環境変数
 cloud_run_env_vars = {
@@ -53,6 +54,7 @@ cloud_run_secrets = [
 # Cloud Run 設定（FastAPI最適化ワーカー）
 # ============================================
 fastapi_service_name = "timetable-optimisation-api"  # サービス名
+# コンテナイメージURL（初回作成時のみ使用。以後のイメージ更新はCloud Build。ignore_changes設定済み）
 fastapi_image        = "asia-northeast1-docker.pkg.dev/YOUR_PROJECT_ID/cloud-run-source-deploy/timetable-optimisation-api:tag"
 
 # 環境変数（GurobiのWLSライセンス等。INT_API_URL / INT_API_AUDIENCE は自動設定されるため不要）
