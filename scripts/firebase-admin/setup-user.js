@@ -1,13 +1,14 @@
 /**
  * Firebase Admin SDK - テストユーザー作成スクリプト
  *
- * 新規ユーザーを作成し、カスタムクレーム（roles: ["USER"], schId）を自動設定します。
+ * 新規ユーザーを作成し、カスタムクレーム（roles: ["USER"], schoolId）を自動設定します。
  *
  * 使用方法:
- *   node setup-user.js <email> <password> [displayName] [schId]
+ *   node setup-user.js <email> <password> [displayName] [schoolId] [roles(カンマ区切り)]
  *
  * 例:
  *   node setup-user.js test@example.com Password123 "Test User" school-0001
+ *   node setup-user.js admin@example.com Password123 "Admin User" school-0001 USER,ADMIN
  */
 
 const admin = require('firebase-admin');
@@ -27,10 +28,11 @@ admin.initializeApp({
  * ユーザー作成とカスタムクレーム設定
  */
 async function setupUser() {
-  const [,, email, password, displayName = 'Test User', schId = 'school-0001'] = process.argv;
+  const [,, email, password, displayName = 'Test User', schoolId = 'school-0001', rolesArg] = process.argv;
+  const roles = rolesArg ? rolesArg.split(',') : ['USER'];
 
   if (!email || !password) {
-    console.error('使用方法: node setup-user.js <email> <password> [displayName] [schId]');
+    console.error('使用方法: node setup-user.js <email> <password> [displayName] [schoolId] [roles(カンマ区切り)]');
     console.error('例:       node setup-user.js test@example.com Password123 "Test User" school-0001');
     process.exit(1);
   }
@@ -56,13 +58,13 @@ async function setupUser() {
     // カスタムクレーム設定
     console.log('🔐 Setting custom claims...');
     await admin.auth().setCustomUserClaims(userRecord.uid, {
-      roles: ['USER'],
-      schId: schId
+      roles: roles,
+      schoolId: schoolId
     });
 
     console.log('✅ Custom claims set successfully!');
-    console.log('   roles: ["USER"]');
-    console.log(`   schId: "${schId}"`);
+    console.log(`   roles: ${JSON.stringify(roles)}`);
+    console.log(`   schoolId: "${schoolId}"`);
     console.log('');
 
     // 結果表示
@@ -74,7 +76,7 @@ async function setupUser() {
     console.log(`Email:    ${userRecord.email}`);
     console.log(`Password: ${password}`);
     console.log(`Name:     ${displayName}`);
-    console.log(`Roles:    ["USER"]`);
+    console.log(`Roles:    ${JSON.stringify(roles)}`);
     console.log('─────────────────────────────────');
     console.log('');
     console.log('💡 Next steps:');

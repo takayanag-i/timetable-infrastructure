@@ -78,7 +78,7 @@ fastapi_memory                = "512Mi"
 fastapi_max_instances         = 3
 fastapi_min_instances         = 0
 fastapi_container_concurrency = 30
-fastapi_timeout_seconds       = 300     # 最適化ジョブの実行時間に応じて延長（最大3600）
+fastapi_timeout_seconds       = 1800    # ソルバーのTimeLimit（1200）+ ペイロード取得/結果保存の余裕。Cloud Tasksの締め切り上限が1800のため実質これが上限
 
 # 実行SA（未指定時はcloud_run_service_accountと同じSAを使用）
 # fastapi_service_account = "fastapi-worker-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com"

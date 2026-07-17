@@ -261,9 +261,9 @@ variable "fastapi_container_concurrency" {
 }
 
 variable "fastapi_timeout_seconds" {
-  description = "FastAPIのリクエストタイムアウト（秒）。最適化ジョブの実行時間を考慮して設定する"
+  description = "FastAPIのリクエストタイムアウト（秒）。最適化はリクエスト内で同期実行されるため、ソルバーのTimeLimitより長く取る"
   type        = number
-  default     = 300
+  default     = 1800
 }
 
 variable "fastapi_service_account" {
