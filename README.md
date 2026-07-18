@@ -22,12 +22,14 @@ infra/
 ├── .gitignore
 ├── README.md
 ├── scripts/                   # 運用スクリプト
-│   └── firebase-admin/       # Firebase Admin SDK スクリプト
+│   └── firebase-admin/       # Identity Platform ユーザー管理（CRUD）
 │       ├── README.md
 │       ├── package.json
-│       ├── setup-user.js     # テストユーザー作成
-│       ├── set-custom-claims.js  # カスタムクレーム設定
-│       └── list-users.js     # ユーザー一覧表示
+│       ├── _lib.js           # 共通処理（SDK初期化・ユーザー解決）
+│       ├── create-user.js    # 作成（クレーム込み）
+│       ├── get-user.js       # 照会（一覧/詳細）
+│       ├── update-user.js    # 更新（クレームはマージ）
+│       └── delete-user.js    # 削除（--yesで実行）
 └── terraform/
     ├── environments/          # 環境別の設定
     │   └── sandbox/          # Sandbox環境
@@ -39,6 +41,8 @@ infra/
     └── modules/              # 再利用可能なモジュール
         ├── cloud_run/        # Cloud Runモジュール
         ├── cloud_sql/        # Cloud SQLモジュール
+        ├── cloud_tasks/      # Cloud Tasksモジュール（最適化ジョブキュー）
+        ├── firebase_admin_sa/  # Admin SDK用サービスアカウント
         ├── identity_platform/  # Identity Platformモジュール
         ├── vpc/              # VPCモジュール
         └── iam/              # IAMモジュール
@@ -48,7 +52,7 @@ infra/
 
 ### Identity Platform ユーザー管理
 
-テストユーザーの作成とカスタムクレーム設定:
+ユーザーのCRUD（通常のメンバー管理はアプリの`/members`画面。これはブートストラップと非常口）:
 
 ```bash
 cd scripts/firebase-admin
@@ -56,14 +60,11 @@ cd scripts/firebase-admin
 # 初回のみ: 依存関係をインストール
 npm install
 
-# テストユーザー作成
-npm run setup-user
-
-# 既存ユーザーにカスタムクレーム設定
-node set-custom-claims.js <USER_UID>
-
-# ユーザー一覧表示
-npm run list-users
+# 作成 / 照会 / 更新 / 削除
+node create-user.js <email> <password> [displayName] [schoolId] [roles]
+node get-user.js <uid|email>          # または --school-id <schoolId> で一覧
+node update-user.js <uid|email> [--roles USER,ADMIN] [--school-id x] [--password x]
+node delete-user.js <uid|email> --yes
 ```
 
 詳細は [`scripts/firebase-admin/README.md`](./scripts/firebase-admin/README.md) を参照してください。
