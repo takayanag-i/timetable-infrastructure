@@ -74,7 +74,7 @@ fastapi_secrets = [
 
 # リソース設定
 fastapi_cpu                   = "1000m"
-fastapi_memory                = "512Mi"
+fastapi_memory                = "1Gi"  # 実測ピーク505Mi(CP-SAT)/384Mi(Gurobi)の約2倍（親リポジトリ#208）
 fastapi_max_instances         = 3
 fastapi_min_instances         = 0
 fastapi_container_concurrency = 30
