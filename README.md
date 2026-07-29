@@ -25,15 +25,8 @@
 infra/
 ├── .gitignore
 ├── README.md
-├── scripts/                   # 運用スクリプト
-│   └── firebase-admin/       # Identity Platform ユーザー管理（CRUD）
-│       ├── README.md
-│       ├── package.json
-│       ├── _lib.js           # 共通処理（SDK初期化・ユーザー解決）
-│       ├── create-user.js    # 作成（クレーム込み）
-│       ├── get-user.js       # 照会（一覧/詳細）
-│       ├── update-user.js    # 更新（クレームはマージ）
-│       └── delete-user.js    # 削除（--yesで実行）
+├── scripts/                  # 運用スクリプト
+│   └── firebase-admin/       # Identity Platform ADMIN用
 └── terraform/
     ├── environments/          # 環境別の設定
     │   └── sandbox/          # Sandbox環境
