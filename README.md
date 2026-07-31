@@ -121,3 +121,5 @@ terraform refresh
 
 - **Cloud SQL ユーザー**: パスワード管理の複雑さを避けるため、`cloud_sql_users = []`を設定し、GCPコンソールまたはgcloudコマンドで直接管理
 - **Cloud Run Service Account**: 既存のCI/CDパイプライン（Cloud Build）で使用されているため、既存の`cloud-run-sa`を参照する形で利用
+- **コンテナイメージ**: デプロイはCloud Build（mainへのpushトリガー）。Terraformは`image`を`ignore_changes`とし、構成（環境変数・IAM・リソース設定）のみを管理してCloud Buildのデプロイを巻き戻さない
+- **front-app**: GCP外（Vercel）。Git連携CIで自動デプロイ（main=本番、ブランチ=プレビュー）。環境変数はVercelプロジェクト設定で管理
