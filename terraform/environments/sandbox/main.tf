@@ -101,6 +101,9 @@ module "cloud_sql" {
   ipv4_enabled        = true
   authorized_networks = var.cloud_sql_authorized_networks
 
+  # スキーマ適用はIAM認証で行う（パスワードを発行しない）
+  database_flags = [{ name = "cloudsql.iam_authentication", value = "on" }]
+
   databases = var.cloud_sql_databases
   users     = var.cloud_sql_users
 
@@ -145,4 +148,13 @@ module "cloud_tasks" {
   max_dispatches_per_second      = var.cloud_tasks_max_dispatches_per_second
   max_attempts                   = 1
   enqueuer_service_account_email = var.cloud_run_service_account
+}
+
+# GitHub ActionsからDBスキーマを適用するためのアクセス設定（鍵もパスワードも持たない）
+module "schema_apply_access" {
+  source = "../../modules/schema_apply_access"
+
+  project_id              = var.project_id
+  github_repository       = var.schema_apply_github_repository
+  cloud_sql_instance_name = var.cloud_sql_instance_name
 }

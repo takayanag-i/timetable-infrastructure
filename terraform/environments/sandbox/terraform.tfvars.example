@@ -159,3 +159,5 @@ firebase_admin_sa_account_id   = "firebase-admin-sa"           # サービスア
 firebase_admin_sa_display_name = "Firebase Admin Service Account" # 表示名
 # キー発行はCloud ConsoleのIAM > サービスアカウントから行ってください
 
+# GitHub Actions（DBスキーマ適用）
+schema_apply_github_repository = "takayanag-i/timetable-internal-api"

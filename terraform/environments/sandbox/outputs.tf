@@ -76,3 +76,17 @@ output "cloud_tasks_queue_path" {
   value       = module.cloud_tasks.queue_path
 }
 
+output "schema_apply_workload_identity_provider" {
+  description = "GitHub Actionsの google-github-actions/auth に渡す provider（リポジトリ変数に設定する）"
+  value       = module.schema_apply_access.workload_identity_provider
+}
+
+output "schema_apply_service_account" {
+  description = "GitHub Actionsが借用するサービスアカウント（リポジトリ変数に設定する）"
+  value       = module.schema_apply_access.service_account_email
+}
+
+output "schema_apply_database_user" {
+  description = "DB側のIAMユーザー名（初回のロール付与に使う）"
+  value       = module.schema_apply_access.database_user_name
+}
