@@ -6,7 +6,7 @@ Terraformが `terraform/`、運用スクリプトが `scripts/`。構成は `env
 
 原則は親リポジトリの `CLAUDE.md` が持つ。**コードを読んでも分からないことだけを書く。** ここでは HCL の書式だけを定める。
 
-### description 属性が正本
+### 説明は description 属性に書く
 
 `variable` / `output` の説明は**コメントではなく `description` に書く**。`terraform output` や `terraform-docs` が拾えるのは `description` だけで、コメントは読み手に届かない。
 
