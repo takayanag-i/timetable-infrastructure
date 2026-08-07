@@ -11,12 +11,12 @@ Terraformが `terraform/`、運用スクリプトが `scripts/`。構成は `env
 `variable` / `output` の説明は**コメントではなく `description` に書く**。`terraform output` や `terraform-docs` が拾えるのは `description` だけで、コメントは読み手に届かない。
 
 ```hcl
-✅ variable "db_instance_name" {
+良い例: variable "db_instance_name" {
      description = "Cloud SQLインスタンス名。スキーマ適用ジョブが接続先の特定に使う"
      type        = string
    }
 
-❌ # Cloud SQLインスタンス名
+悪い例: # Cloud SQLインスタンス名
    variable "db_instance_name" {
      type = string
    }
@@ -29,8 +29,8 @@ Terraformが `terraform/`、運用スクリプトが `scripts/`。構成は `env
 変数・リソースが多いファイルでは、グルーピングの見出しを許可する。分類が読み取れることに価値がある。
 
 ```hcl
-✅ # Cloud SQL variables
-✅ # GitHub Actions — DBスキーマ適用
+良い例: # Cloud SQL variables
+良い例: # GitHub Actions — DBスキーマ適用
 ```
 
 ### リソースに書いてよいこと
@@ -38,9 +38,9 @@ Terraformが `terraform/`、運用スクリプトが `scripts/`。構成は `env
 宣言を読んでも分からない**外から来た制約**。クラウド側の仕様・クォータ・順序依存が主。
 
 ```hcl
-✅ # Atlasは事前にスキーマを読むため、information_schemaの全件が見える権限が要る
-✅ # WIFのattribute_conditionでリポジトリを限定する。無いと任意のリポジトリからトークンを引ける
-❌ # サービスアカウントを作成する
+良い例: # Atlasは事前にスキーマを読むため、information_schemaの全件が見える権限が要る
+良い例: # WIFのattribute_conditionでリポジトリを限定する。無いと任意のリポジトリからトークンを引ける
+悪い例: # サービスアカウントを作成する
 ```
 
 - `depends_on` / `lifecycle` / `ignore_changes` を書いたら**その理由を必ず添える**。宣言だけでは「なぜ通常の依存解決では足りないか」が読めない
