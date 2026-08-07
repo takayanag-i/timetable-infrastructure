@@ -15,23 +15,23 @@ resource "google_identity_platform_config" "default" {
       password_required = true
     }
 
-    # 匿名認証（無効化）
+    # 匿名認証。無効化する
     anonymous {
       enabled = false
     }
 
-    # 電話番号認証（無効化）
+    # 電話番号認証。無効化する
     phone_number {
       enabled            = false
       test_phone_numbers = {}
     }
   }
 
-  # マルチテナント設定（無効化）
+  # マルチテナント設定。無効化する
   multi_tenant {
     allow_tenants = false
   }
 
-  # 認証済みドメイン（フロントエンドのオリジン）
+  # 認証済みドメイン。フロントエンドのオリジンを指す
   authorized_domains = var.authorized_domains
 }

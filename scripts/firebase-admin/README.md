@@ -13,19 +13,19 @@ sandboxのIdentity Platformユーザーを直接操作するCRUDスクリプト�
 ## コマンド
 
 ```bash
-# Create: ユーザー作成（クレーム込み）
+# Create: ユーザー作成。クレーム込み
 node create-user.js <email> <password> [displayName] [schoolId] [roles(カンマ区切り)]
 node create-user.js admin@example.com Password123 "Admin" school-0001 USER,ADMIN
 
-# Read: 詳細（uidまたはemail） / 学校単位の一覧
+# Read: uidまたはemailで詳細 / 学校単位の一覧
 node get-user.js sandbox-kobe-user@timetable-app.com
 node get-user.js --school-id school-0001
 
-# Update: 指定項目のみ更新（クレームは既存とマージ）
+# Update: 指定項目のみ更新。クレームは既存とマージする
 node update-user.js <uid|email> [--roles USER,ADMIN] [--school-id school-0001] \
                                 [--display-name "名前"] [--password 新パスワード]
 
-# Delete: 引数だけならdry-run（対象表示のみ）、--yesで実行
+# Delete: 引数だけなら対象表示のみのdry-run、--yesで実行
 node delete-user.js <uid|email>
 node delete-user.js <uid|email> --yes
 ```

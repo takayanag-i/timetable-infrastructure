@@ -40,7 +40,7 @@ module "cloud_run_fastapi" {
   service_name = var.fastapi_service_name
   image        = var.fastapi_image
 
-  # INT_API_URL はSpring（内部API）のURLに自動追従。
+  # INT_API_URL は内部APIのURLに自動追従。
   # INT_API_AUDIENCE はSpring側の SERVICE_AUTH_AUDIENCE と完全一致が必要なため同じ値を参照する
   environment_variables = merge(var.fastapi_env_vars, {
     INT_API_URL      = module.cloud_run.service_url
@@ -56,7 +56,7 @@ module "cloud_run_fastapi" {
   timeout_seconds       = var.fastapi_timeout_seconds
   startup_cpu_boost     = true
 
-  # 公開しない。Cloud TasksのOIDCトークン（CLOUD_TASKS_SA = cloud_run_service_account）
+  # 公開しない。CLOUD_TASKS_SA = cloud_run_service_account のCloud TasksのOIDCトークン
   # による呼び出しのみ許可
   allow_unauthenticated = false
   invoker_members       = ["serviceAccount:${var.cloud_run_service_account}"]
@@ -101,7 +101,7 @@ module "cloud_sql" {
   ipv4_enabled        = true
   authorized_networks = var.cloud_sql_authorized_networks
 
-  # スキーマ適用はIAM認証で行う（パスワードを発行しない）
+  # スキーマ適用はIAM認証で行い、パスワードを発行しない
   database_flags = [{ name = "cloudsql.iam_authentication", value = "on" }]
 
   databases = var.cloud_sql_databases
@@ -129,8 +129,8 @@ module "firebase_admin_sa" {
   display_name = var.firebase_admin_sa_display_name
 }
 
-# SpringがOIDCトークン付きタスクを作成するには、トークン対象SA（CLOUD_TASKS_SA）への
-# actAs権限が必要（対象SAが自分自身でも明示的な付与が要る）
+# 内部APIがOIDCトークン付きタスクを作成するには、トークン対象SAである CLOUD_TASKS_SA への
+# actAs権限が要る。対象SAが自分自身でも明示的な付与が必要になる
 resource "google_service_account_iam_member" "spring_acts_as_tasks_oidc_sa" {
   service_account_id = "projects/${var.project_id}/serviceAccounts/${var.cloud_run_service_account}"
   role               = "roles/iam.serviceAccountUser"
@@ -150,7 +150,7 @@ module "cloud_tasks" {
   enqueuer_service_account_email = var.cloud_run_service_account
 }
 
-# GitHub ActionsからDBスキーマを適用するためのアクセス設定（鍵もパスワードも持たない）
+# GitHub ActionsからDBスキーマを適用するためのアクセス設定。鍵もパスワードも持たない
 module "schema_apply_access" {
   source = "../../modules/schema_apply_access"
 

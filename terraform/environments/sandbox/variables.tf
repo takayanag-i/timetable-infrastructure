@@ -291,7 +291,7 @@ variable "cloud_tasks_max_dispatches_per_second" {
   default     = 1
 }
 
-# GitHub Actions（DBスキーマ適用）
+# GitHub Actions — DBスキーマ適用
 variable "schema_apply_github_repository" {
   description = "スキーマ適用を実行するGitHubリポジトリ（owner/repo形式）"
   type        = string

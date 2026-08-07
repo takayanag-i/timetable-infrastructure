@@ -1,8 +1,8 @@
 # GitHub ActionsからDBスキーマを適用するためのアクセス設定。
 #
 # 鍵もパスワードも持たない経路にする:
-#   - GCPへの認証   Workload Identity Federation（サービスアカウントキーを発行しない）
-#   - DBへの認証    Cloud SQL IAM認証（パスワードを発行しない）
+#   - GCPへの認証   Workload Identity Federation。サービスアカウントキーを発行しない
+#   - DBへの認証    Cloud SQL IAM認証。パスワードを発行しない
 
 # GitHubが発行するOIDCトークンをGCPが信頼するための入口
 resource "google_iam_workload_identity_pool" "github_actions" {
@@ -48,7 +48,7 @@ resource "google_project_iam_member" "schema_applier_cloudsql_client" {
   member  = "serviceAccount:${google_service_account.schema_applier.email}"
 }
 
-# IAM認証でDBにログインするために必要（パスワードの代わり）
+# IAM認証でDBにログインするために要る。パスワードの代わりになる
 resource "google_project_iam_member" "schema_applier_cloudsql_instance_user" {
   project = var.project_id
   role    = "roles/cloudsql.instanceUser"
@@ -56,7 +56,7 @@ resource "google_project_iam_member" "schema_applier_cloudsql_instance_user" {
 }
 
 # DB側のログインユーザー。パスワードを持たず、IAMで認証する。
-# 既存テーブルを ALTER するにはロール付与が要る（初回のみ手動。手順は .claude/skills/db-schema）
+# 既存テーブルを ALTER するにはロール付与が要る。初回のみ手動で、手順は .claude/skills/db-schema
 resource "google_sql_user" "schema_applier" {
   project  = var.project_id
   instance = var.cloud_sql_instance_name
